@@ -130,4 +130,19 @@ inline float VectorDistance<METRIC_Jaccard>::operator()(
     return accu_num / accu_den;
 }
 
+template <>
+inline float VectorDistance<METRIC_Wasserstein>::operator()(
+        const float* x,
+        const float* y) const {
+    float x_accu = 0;
+    float y_accu = 0;
+    float diff = 0;
+    for (size_t i = 0; i < d; i++) {
+        x_accu += x[i];
+        y_accu += y[i];
+        diff += fabs(x_accu - y_accu);
+    }
+    return diff;
+}
+
 } // namespace faiss

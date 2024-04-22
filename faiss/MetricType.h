@@ -33,6 +33,9 @@ enum MetricType {
     METRIC_JensenShannon,
     METRIC_Jaccard, ///< defined as: sum_i(min(a_i, b_i)) / sum_i(max(a_i, b_i))
                     ///< where a_i, b_i > 0
+
+    /// experimental support
+    METRIC_Wasserstein = 40,
 };
 
 /// all vector indices are this type
