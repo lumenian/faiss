@@ -424,6 +424,9 @@ void Clustering::train_encoded(
         // k-means iterations
 
         float obj = 0;
+        float last_obj = 0;
+        int obj_repetitions = 0;
+        
         for (int i = 0; i < niter; i++) {
             double t0s = getmillisecs();
 
@@ -513,6 +516,19 @@ void Clustering::train_encoded(
 
             index.add(k, centroids.data());
             InterruptCallback::check();
+
+            if (obj == last_obj) {
+                if (++obj_repetitions == 5) {
+                    if (verbose) {
+                        printf("\n");
+                        printf("  Objective hasn't been improving for 5 iterations, terminating current run");
+                    }
+                    break;
+                }
+            } else {
+                obj_repetitions = 0;
+                last_obj = obj;
+            }
         }
 
         if (verbose)
